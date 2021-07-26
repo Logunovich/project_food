@@ -145,11 +145,5 @@ setClock('.timer', deadLine);
 
 
 
-
-
-
-
-
-
 });
 
