@@ -81,7 +81,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Решение таймера по уроку:
 
-const deadLine = '2021-09-08'; 
+const deadLine = '2021-10-08'; 
 
 function getTimeRemaning (endtime) {
     const t = Date.parse(endtime) - Date.parse(new Date()),
