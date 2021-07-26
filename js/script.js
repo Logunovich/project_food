@@ -143,9 +143,5 @@ setClock('.timer', deadLine);
 
 
 
-
-
-const confiq = 1;
-
 });
 
