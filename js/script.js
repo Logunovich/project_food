@@ -141,31 +141,68 @@ setClock('.timer', deadLine);
 
 // Модальное окно - мое решение 
 
-const modalBtn = document.querySelectorAll('[data-modal]'),
-      modalContent = document.querySelector('.modal'),
-      closeBtn = document.querySelector('.modal__close');
+// const modalBtn = document.querySelectorAll('[data-modal]'),
+//       modalContent = document.querySelector('.modal'),
+//       closeBtn = document.querySelector('.modal__close');
+
+// modalBtn.forEach(btn => {
+//         btn.addEventListener('click', openModal);
+// });
+
+// closeBtn.addEventListener('click', closeModal);
+
+// function openModal() {
+//     modalContent.classList.add('show');
+//     modalContent.classList.remove('hide');
+//     document.body.style.cssText = 'overflow: hidden';
+// };
+
+// function closeModal() {
+//     modalContent.classList.add('hide');
+//     modalContent.classList.remove('show');
+//     document.body.style.cssText = 'overflow: scroll';
+// };
+
+// конец моего решения
+
+// решение по уроку (модельное окно)
 
 
+const modalTrigger = document.querySelectorAll('[data-modal]'),
+      modal = document.querySelector('.modal'),
+      modalCloseBtn = document.querySelector('[data-close]');
 
+modalTrigger.forEach(btn => {
+    btn.addEventListener('click', () => {
+        modal.classList.add('show');
+        modal.classList.remove('hide');
+        document.body.style.overflow = 'hidden';
+    });
 
-modalBtn.forEach(btn => {
-        btn.addEventListener('click', openModal);
 });
 
-closeBtn.addEventListener('click', closeModal);
-
-function openModal() {
-    modalContent.classList.add('show');
-    modalContent.classList.remove('hide');
-    document.body.style.cssText = 'overflow: hidden';
+function closeModal () {
+    modal.classList.add('hide');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
 };
 
-function closeModal() {
-    modalContent.classList.add('hide');
-    modalContent.classList.remove('show');
-    document.body.style.cssText = 'overflow: scroll';
-};
 
+modalCloseBtn.addEventListener('click', closeModal);
+
+modal.addEventListener('click', (e)=> {
+    if (e.target === modal) {
+        closeModal();
+    } 
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.code === 'Escape' && modal.classList.contains('show')) {
+        closeModal();
+    }
+});
+
+// конец урока
 
 
 });
