@@ -139,9 +139,33 @@ setClock('.timer', deadLine);
 
 // конец урока по таймеру
 
+// Модальное окно - мое решение 
 
+const modalBtn = document.querySelectorAll('[data-modal]'),
+      modalContent = document.querySelector('.modal'),
+      closeBtn = document.querySelector('.modal__close');
+
+
+
+
+modalBtn.forEach(btn => {
+        btn.addEventListener('click', openModal);
+});
+
+closeBtn.addEventListener('click', closeModal);
+
+function openModal() {
+    modalContent.classList.add('show');
+    modalContent.classList.remove('hide');
+    document.body.style.cssText = 'overflow: hidden';
+};
+
+function closeModal() {
+    modalContent.classList.add('hide');
+    modalContent.classList.remove('show');
+    document.body.style.cssText = 'overflow: scroll';
+};
 
 
 
 });
-
