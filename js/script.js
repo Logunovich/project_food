@@ -81,7 +81,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Решение таймера по уроку:
 
-const deadLine = '2020-10-08'; 
+const deadLine = '2021-10-08'; 
 
 function getTimeRemaning (endtime) {
     const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -173,15 +173,18 @@ const modalTrigger = document.querySelectorAll('[data-modal]'),
       modalCloseBtn = document.querySelector('[data-close]');
 
 modalTrigger.forEach(btn => {
-    btn.addEventListener('click', () => {
-        modal.classList.add('show');
-        modal.classList.remove('hide');
-        document.body.style.overflow = 'hidden';
-    });
+    btn.addEventListener('click', openModal);
 
 });
 
-function closeModal () {
+function openModal() {
+    modal.classList.add('show');
+    modal.classList.remove('hide');
+    document.body.style.overflow = 'hidden';
+    clearInterval(modalTimerId);
+}
+
+function closeModal() {
     modal.classList.add('hide');
     modal.classList.remove('show');
     document.body.style.overflow = '';
@@ -203,6 +206,22 @@ document.addEventListener('keydown', (e) => {
 });
 
 // конец урока
+
+// дорабатываем модельное окно
+
+const modalTimerId = setTimeout (openModal, 1500);
+
+function showModalByScroll () {
+    if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+        openModal();
+        window.removeEventListener('scroll', showModalByScroll);
+    }
+}
+
+
+
+
+window.addEventListener('scroll', showModalByScroll);
 
 
 });
