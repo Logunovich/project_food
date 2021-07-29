@@ -226,35 +226,79 @@ window.addEventListener('scroll', showModalByScroll);
 // Выводим динамически элементы на страницу при помощи классов и конструкторов. Мой вариант (31 строка): 
 
 
-const item = document.querySelectorAll('.menu__item');
-console.log(item);
+// const item = document.querySelectorAll('.menu__item');
+// console.log(item);
 
-class DayMenu {
-    constructor(img, alt, title, descr, price) {
-        this.img = img;
+// class DayMenu {
+//     constructor(img, alt, title, descr, price) {
+//         this.img = img;
+//         this.alt = alt;
+//         this.title = title;
+//         this.descr = descr;
+//         this.price = price * 13;
+//     }
+//     embedContentMenu() {
+//         return `<img src="${this.img}" alt="${this.alt}">
+//         <h3 class="menu__item-subtitle">${this.title}</h3>
+//         <div class="menu__item-descr">${this.descr}</div>
+//         <div class="menu__item-divider"></div>
+//         <div class="menu__item-price">
+//             <div class="menu__item-cost">Цена:</div>
+//             <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+//         </div>`
+//     }
+// }
+
+// const menu1 = new DayMenu('img/tabs/vegy.jpg', 'vegy', 'Меню "Фитнес"', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 29).embedContentMenu();
+// const menu2 = new DayMenu('img/tabs/elite.jpg', 'elite', 'Меню "Премиум"', 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!', 55).embedContentMenu();
+// const menu3 = new DayMenu('img/tabs/post.jpg', 'post', 'Меню "Постное"', 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков. ', 40).embedContentMenu();
+
+// item[0].innerHTML = menu1;
+// item[1].innerHTML = menu2;
+// item[2].innerHTML = menu3;
+
+// конец моего решения. Посмотрим что будет дальше! 
+
+// Решение по курсу
+
+class MenuCard {
+    constructor(src, alt, title, descr, price, parentSelector) {
+        this.src = src;
         this.alt = alt;
         this.title = title;
         this.descr = descr;
-        this.price = price * 13;
+        this.price = price;
+        this.parent = document.querySelector(parentSelector);
+        this.transfer = 27;
+        this.changeToUAH();
     }
-    embedContentMenu() {
-        return `<img src="${this.img}" alt="${this.alt}">
-        <h3 class="menu__item-subtitle">${this.title}</h3>
-        <div class="menu__item-descr">${this.descr}</div>
-        <div class="menu__item-divider"></div>
-        <div class="menu__item-price">
-            <div class="menu__item-cost">Цена:</div>
-            <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
-        </div>`
+
+    changeToUAH() {
+        this.price = this.price * this.transfer; 
     }
-}
 
-const menu1 = new DayMenu('img/tabs/vegy.jpg', 'vegy', 'Меню "Фитнес"', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 29).embedContentMenu();
-const menu2 = new DayMenu('img/tabs/elite.jpg', 'elite', 'Меню "Премиум"', 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!', 55).embedContentMenu();
-const menu3 = new DayMenu('img/tabs/post.jpg', 'post', 'Меню "Постное"', 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков. ', 40).embedContentMenu();
+    render() {
+        const element = document.createElement('div');
+        element.innerHTML = `
+        <div class="menu__item">
+                    <img src=${this.src} alt=${this.alt}>
+                    <h3 class="menu__item-subtitle">${this.title}</h3>
+                    <div class="menu__item-descr">${this.descr}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+                    </div>
+                </div>
+        `;
 
-item[0].innerHTML = menu1;
-item[1].innerHTML = menu2;
-item[2].innerHTML = menu3;
+        this.parent.append(element);
+        }
+
+    }
+
+    new MenuCard('"img/tabs/vegy.jpg"', '"vegy"', 'Меню "Фитнес"', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 9, '.menu .container').render();
+    new MenuCard('"img/tabs/elite.jpg"', '"elite"', 'Меню "Премиум"', 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!', 5, '.menu .container').render();
+    new MenuCard('"img/tabs/post.jpg"', '"post"', 'Меню "Постное"', 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков. ', 8, '.menu .container').render();
 
 });
