@@ -281,8 +281,9 @@ class MenuCard {
     render() {
         const element = document.createElement('div');
         if (this.classes.length === 0) {
-            this.element = 'menu__item';
-            element.classList.add(this.element);
+            this.class = 'menu__item';
+            element.classList.add(this.class);
+            console.log(this);
         } else {
             this.classes.forEach(className => element.classList.add(className));
         }
@@ -308,5 +309,38 @@ class MenuCard {
     new MenuCard('"img/tabs/vegy.jpg"', '"vegy"', 'Меню "Фитнес"', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 9, '.menu .container').render();
     new MenuCard('"img/tabs/elite.jpg"', '"elite"', 'Меню "Премиум"', 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!', 5, '.menu .container', 'menu__item').render();
     new MenuCard('"img/tabs/post.jpg"', '"post"', 'Меню "Постное"', 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков. ', 8, '.menu .container', 'menu__item').render();
+
+
+// Разбираюсь с работой конструкторов и классов
+
+class NewCars {
+    constructor(model, year, transm) {
+        this.model = model;
+        this.year = year;
+        this.transm = transm;
+    } 
+    render() {
+        const element = document.createElement('div');
+        this.el = 'test__class';
+        console.log(this.el);
+        
+
+        element.innerHTML = `
+                    <h3 class="menu__item-subtitle">${this.model}</h3>
+                    <div class="menu__item-descr">${this.year}</div>
+                    <div class="menu__item-divider"></div>
+                    <div class="menu__item-price">
+                        <div class="menu__item-cost">Цена:</div>
+                        <div class="menu__item-total"><span>${this.transm}</span> грн/день</div>
+                    </div>
+        `;
+
+        console.log(element);
+        }
+    }
+
+new NewCars('Audi 100', 2020, 'manual').render();
+        
+
 
 });
