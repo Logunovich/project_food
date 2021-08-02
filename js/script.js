@@ -283,7 +283,6 @@ class MenuCard {
         if (this.classes.length === 0) {
             this.class = 'menu__item';
             element.classList.add(this.class);
-            console.log(this);
         } else {
             this.classes.forEach(className => element.classList.add(className));
         }
@@ -313,33 +312,89 @@ class MenuCard {
 
 // Разбираюсь с работой конструкторов и классов
 
-class NewCars {
-    constructor(model, year, transm) {
-        this.model = model;
-        this.year = year;
-        this.transm = transm;
-    } 
-    render() {
-        const element = document.createElement('div');
-        this.el = 'test__class';
-        console.log(this.el);
+// class NewCars {
+//     constructor(model, year, transm) {
+//         this.model = model;
+//         this.year = year;
+//         this.transm = transm;
+//     } 
+//     render() {
+//         const element = document.createElement('div');
+//         this.el = 'test__class';
+//         console.log(this.el);
         
 
-        element.innerHTML = `
-                    <h3 class="menu__item-subtitle">${this.model}</h3>
-                    <div class="menu__item-descr">${this.year}</div>
-                    <div class="menu__item-divider"></div>
-                    <div class="menu__item-price">
-                        <div class="menu__item-cost">Цена:</div>
-                        <div class="menu__item-total"><span>${this.transm}</span> грн/день</div>
-                    </div>
-        `;
+//         element.innerHTML = `
+//                     <h3 class="menu__item-subtitle">${this.model}</h3>
+//                     <div class="menu__item-descr">${this.year}</div>
+//                     <div class="menu__item-divider"></div>
+//                     <div class="menu__item-price">
+//                         <div class="menu__item-cost">Цена:</div>
+//                         <div class="menu__item-total"><span>${this.transm}</span> грн/день</div>
+//                     </div>
+//         `;
 
-        console.log(element);
-        }
-    }
+//         console.log(element);
+//         }
+//     }
 
-new NewCars('Audi 100', 2020, 'manual').render();
+// new NewCars('Audi 100', 2020, 'manual').render();
+
+// конец эксперимента, работаем дальше
+
+// Отправляем данные на сервер
+
+const forms = document.querySelectorAll('form'),
+      message = {
+          loading: 'Загрузка',
+          success: 'Спасибо! Скоро мы с вами свяжемся',
+          falure: 'Что-то пошло не так...'
+      };
+
+forms.forEach(item => {
+    postData(item);
+});
+
+function postData(form) {
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const statusMessage = document.createElement('div');
+        statusMessage.classList.add('status');
+        statusMessage.textContent = message.loading;
+
+        form.append(statusMessage);
+
+
+        const request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+        
+        request.setRequestHeader('Content-type', 'application/json');
+        const formData = new FormData(form);
+
+        const obj = {};
+        formData.forEach(function(value, key) {
+            obj[key] = value;
+        });
+
+        const json = JSON.stringify(obj);
+
+        request.send(json);
+        
+        request.addEventListener('load', () => {
+            if (request.status === 200) {
+                console.log(request.response);
+                statusMessage.textContent = message.success;
+                form.reset();
+                setTimeout(() => {
+                    statusMessage.remove();
+                }, 2000);
+            }
+            else {
+                statusMessage.textContent = message.falure;
+            }
+        });
+    });
+}
         
 
 
