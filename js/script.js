@@ -487,4 +487,65 @@ function showThanksModal(message) {
         
 
 
+// Slider. Моя работа
+
+const slider = document.querySelectorAll('.offer__slide'),
+      btnNext = document.querySelector('.offer__slider-next'),
+      btnPrev = document.querySelector('.offer__slider-prev'),
+      current = document.querySelector('#current'),
+      total = document.querySelector('#total');
+
+      let totalSliders = slider.length,
+          currentSlider = 1;
+
+          if (totalSliders < 10) {
+            totalSliders = `0${totalSliders}`
+        } 
+
+function hideSliders(slide) {
+    slide.classList.add('hide');
+    slide.classList.remove('show');
+}
+
+function showSlider(num = 0) {
+
+    slider[num].classList.add('show');
+    slider[num].classList.remove('hide');
+
+    currentSlider = num + 1;
+    
+    if (currentSlider < 10) {
+        currentSlider = `0${currentSlider}`
+    }
+    total.innerHTML = totalSliders;
+    current.innerHTML = currentSlider;
+
+}
+
+slider.forEach(item => hideSliders(item));
+
+let defaultSlider = 0;
+showSlider(defaultSlider);
+
+
+btnNext.addEventListener('click', () => {
+    defaultSlider += 1;
+    if (defaultSlider + 1 > totalSliders) {
+        defaultSlider = 0;
+    }
+    slider.forEach(item => hideSliders(item));
+    showSlider(defaultSlider);
+});
+
+btnPrev.addEventListener('click', () => {
+    defaultSlider -= 1;
+    if (defaultSlider < 0) {
+        defaultSlider = totalSliders - 1;
+    }
+    console.log(defaultSlider);
+    slider.forEach(item => hideSliders(item));
+    showSlider(defaultSlider);
+    console.log(defaultSlider)
+});
+
 });
