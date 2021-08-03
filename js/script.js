@@ -366,10 +366,8 @@ function postData(form) {
         form.insertAdjacentElement('afterend', statusMessage)
 
 
-        const request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
+
         
-        request.setRequestHeader('Content-type', 'application/json');
         const formData = new FormData(form);
 
         const obj = {};
@@ -377,21 +375,36 @@ function postData(form) {
             obj[key] = value;
         });
 
-        const json = JSON.stringify(obj);
-
-        request.send(json);
+        fetch('server.php', {
+            method: "POST", 
+            headers: {
+                'Content-type': 'application/json'
+            }, 
+            body: JSON.stringify(obj)
+        })
+        .then(data => data.text())
+        .then(data => {
+            console.log(data);
+            showThanksModal(message.success);
+            form.reset();
+            statusMessage.remove();
+        }).catch(() => {
+            showThanksModal(message.falure);
+        }).finally(() => {
+            form.reset();
+        })
         
-        request.addEventListener('load', () => {
-            if (request.status === 200) {
-                console.log(request.response);
-                showThanksModal(message.success);
-                form.reset();
-                statusMessage.remove();
-                }
-            else {
-                showThanksModal(message.falure);
-            }
-        });
+        // request.addEventListener('load', () => {
+        //     if (request.status === 200) {
+        //         console.log(request.response);
+        //         showThanksModal(message.success);
+        //         form.reset();
+        //         statusMessage.remove();
+        //         }
+        //     else {
+        //         showThanksModal(message.falure);
+        //     }
+        // });
     });
 }
 
@@ -418,6 +431,7 @@ function showThanksModal(message) {
     }, 4000)
 }
 
+// Fetch API
 
 
         
