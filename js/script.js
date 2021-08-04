@@ -551,6 +551,7 @@ function showThanksModal(message) {
 // конец моего решения. Делаем урок
 
 const slides = document.querySelectorAll('.offer__slide'),
+      slider = document.querySelector('.offer__slider'),
       prev = document.querySelector('.offer__slider-prev'),
       next = document.querySelector('.offer__slider-next'),
       total = document.querySelector('#total'),
@@ -559,21 +560,16 @@ const slides = document.querySelectorAll('.offer__slide'),
       slidesField = document.querySelector('.offer__slider-inner'),
       width = window.getComputedStyle(slidesWrapper).width;
 
-
 let slideIndex = 1;
 let offset = 0;
 
 if (slides.length < 10) {
     total.textContent = `0${slides.length}`;
-
+    current.textContent = `0${slideIndex}`;
 } else {
     total.textContent = slides.length;
+    current.textContent = slideIndex;
 }
-if (slideIndex < 10) {
-current.textContent = `0${slideIndex}`;
-} else {
-current.textContent = slideIndex;
-};
 
 slidesField.style.width = 100 * slides.length + '%';
 slidesField.style.display = 'flex';
@@ -584,6 +580,52 @@ slidesWrapper.style.overflow = 'hidden';
 slides.forEach(slide => {
     slide.style.width = width;
 });
+
+slider.style.position = 'relative';
+
+const indicators = document.createElement('ol'),
+      dots = [];
+
+indicators.classList.add('carousel-indicators');
+indicators.style.cssText = `
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 15;
+    display: flex;
+    justify-content: center;
+    margin-right: 15%;
+    margin-left: 15%;
+    list-style: none;
+`;
+
+slider.append(indicators);
+
+for (let i = 0; i < slides.length; i++) {
+    const dot = document.createElement('li');
+    dot.setAttribute('data-slide-to', i + 1);
+    dot.style.cssText = `
+        box-sizing: content-box;
+        flex: 0 1 auto;
+        width: 30px;
+        height: 6px;
+        margin-right: 3px;
+        margin-left: 3px;
+        cursor: pointer;
+        background-color: #fff;
+        background-clip: padding-box;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        opacity: .5;
+        transition: opacity .6s ease;
+    `;
+    if (i === 0) {
+        dot.style.opacity = 1;
+    }
+    indicators.append(dot);
+    dots.push(dot);
+};
 
 next.addEventListener('click', () => {
     if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
@@ -601,15 +643,18 @@ next.addEventListener('click', () => {
         slideIndex++;
     }
 
-    if (slideIndex < 10) {
+    if (slides.length < 10) {
         current.textContent = `0${slideIndex}`
     } else {
         current.textContent = slideIndex;
     }
-    showDots();
+
+    dots.forEach(dot => {
+        dot.style.opacity = '.5';
+    });
+    dots[slideIndex - 1].style.opacity = 1;
     
 });
-
 
 prev.addEventListener('click', () => {
     if (offset == 0) {
@@ -628,15 +673,37 @@ prev.addEventListener('click', () => {
         slideIndex--;
     }
 
-    if (slideIndex < 10) {
+    if (slides.length < 10) {
         current.textContent = `0${slideIndex}`
     } else {
         current.textContent = slideIndex;
     }
-    showDots();
+    dots.forEach(dot => {
+        dot.style.opacity = '.5';
+    });
+    dots[slideIndex - 1].style.opacity = 1;
 });
 
 
+    dots.forEach(dot => {
+    dot.addEventListener('click', (e) => {
+        const slideTo = e.target.getAttribute('data-slide-to');
+        slideIndex = slideTo;
+        offset = +width.slice(0, width.length - 2) * (slideTo - 1);
+        slidesField.style.transform = `translateX(-${offset}px)`;
+        
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`
+        } else {
+            current.textContent = slideIndex;
+        };
+
+        dots.forEach(dot => {
+            dot.style.opacity = '.5';
+        });
+        dots[slideIndex - 1].style.opacity = 1;
+    });
+});
 
 // showSlides(slideIndex);
 
@@ -677,110 +744,6 @@ prev.addEventListener('click', () => {
 //     plusSlides(1);
 // });
 
-
-// Dots. My code
-
-
-
-
-const slider = document.querySelector('.offer__slider'), 
-      carousel = document.createElement('div');
-
-
-      carousel.style.cssText = `
-      position: relative;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      z-index: 15;
-      display: flex;
-      justify-content: center;
-      margin-right: 15%;
-      margin-left: 15%;
-      list-style: none;
-      `;
-      
-
-slides.forEach((item, i) => {
-    const dot = document.createElement('div');
-          dot.classList.add(`slide${i + 1}`);
-          dot.classList.add('dot__slider');
-
-    carousel.append(dot);
-    slider.append(carousel);
-});
-
-const dots = document.querySelectorAll('.dot__slider');
-
-function showDots() {
-    dots.forEach(item => {
-    if(item.classList.contains(`slide${slideIndex}`)) {
-        console.log('showDots');
-        item.style.cssText = `    
-        box-sizing: content-box;
-        flex: 0 1 auto;
-        width: 30px;
-        height: 6px;
-        margin-right: 3px;
-        margin-left: 3px;
-        cursor: pointer;
-        background-color: red;
-        background-clip: padding-box;
-        border-top: 10px solid transparent;
-        border-bottom: 10px solid transparent;
-        opacity: .5;
-        transition: opacity .6s ease;
-        `;
-    } else {
-
-        item.style.cssText = `    
-        box-sizing: content-box;
-        flex: 0 1 auto;
-        width: 30px;
-        height: 6px;
-        margin-right: 3px;
-        margin-left: 3px;
-        cursor: pointer;
-        background-color: #000;
-        background-clip: padding-box;
-        border-top: 10px solid transparent;
-        border-bottom: 10px solid transparent;
-        opacity: .5;
-        transition: opacity .6s ease;
-        `;
-        }
-    });
-};
-
-showDots();
-
-function dotsSlide(num) {
-    offset = +width.slice(0, width.length - 2) * (num);
-    slidesField.style.transform = `translateX(-${offset}px)`;
-    slideIndex = num + 1;
-    if (slides.length < 10) {
-        total.textContent = `0${slides.length}`;
-    
-    } else {
-        total.textContent = slides.length;
-    }
-    if (slideIndex < 10) {
-    current.textContent = `0${slideIndex}`;
-    } else {
-    current.textContent = slideIndex;
-    };
-    showDots();
-}
-
-function activeDots() {
-    dots.forEach((d, n) => {
-        d.addEventListener('click', () => {
-            const dotNum = n;
-            dotsSlide(dotNum); 
-        });
-    });
-}
-activeDots();
 
 
 });
