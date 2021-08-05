@@ -771,8 +771,6 @@ function calcTotal() {
         result.textContent = Math.round((88.36 + (13.4 * weight) + (4.8 * height) - (5.7 * age)) * ratio);
         console.log('должно было вывести мужчину!')
     }
-
-    
 };
 
 calcTotal();
@@ -782,7 +780,7 @@ function getStaticInformation(parentSelector, activeClass) {
 
     elements.forEach(elem => {
         elem.addEventListener('click', (e) => {
-            if (e.target.getAttribute('data-ratio') && e.target) {
+            if (e.target.getAttribute('data-ratio')) {
                 ratio = +e.target.getAttribute('data-ratio')
             } else {
                 sex = e.target.getAttribute('id');
@@ -791,12 +789,10 @@ function getStaticInformation(parentSelector, activeClass) {
     
             elements.forEach(elem => {
                 elem.classList.remove(activeClass);
-    
             });
-    
+
             e.target.classList.add(activeClass);
             calcTotal();
-            console.log(e.target);
         });
     });
 };
