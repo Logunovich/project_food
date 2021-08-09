@@ -1,4 +1,4 @@
-function timer() {
+function timer(id, deadline) {
     // Делаем таймер мое решение:
 
 
@@ -94,9 +94,9 @@ function setClock(selector, endtime) {
     }
 }
 
-setClock('.timer', deadLine);
+setClock(id, deadLine);
 
 // конец урока по таймеру
 }
 
-module.exports = timer;
+export default timer;

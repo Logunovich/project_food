@@ -1,5 +1,29 @@
-function modal() {
-    // Модальное окно - мое решение 
+function openModal(modalSelector, modalTimerId, scrollId) {
+    const modal = document.querySelector(modalSelector);
+
+    modal.classList.add('show');
+    modal.classList.remove('hide');
+    document.body.style.overflow = 'hidden';
+    if (modalTimerId) {
+      clearInterval(modalTimerId);
+      window.removeEventListener('scroll', scrollId);
+    }
+
+    
+ // убираем обработчик со скрола (доделать функционал)
+  }
+  
+function closeModal(modalSelector) {
+    const modal = document.querySelector(modalSelector);
+
+    modal.classList.add('hide');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+  };
+  
+
+function modal(triggerSelector, modalSelector, modalTimerId) {
+
 
 // const modalBtn = document.querySelectorAll('[data-modal]'),
 //       modalContent = document.querySelector('.modal'),
@@ -28,39 +52,22 @@ function modal() {
 // решение по уроку (модельное окно)
 
 
-const modalTrigger = document.querySelectorAll('[data-modal]'),
-modal = document.querySelector('.modal');
+const modalTrigger = document.querySelectorAll(triggerSelector),
+      modal = document.querySelector(modalSelector);
 
-modalTrigger.forEach(btn => {
-btn.addEventListener('click', openModal);
-
+      modalTrigger.forEach(btn => {
+      btn.addEventListener('click', () => openModal(modalSelector, modalTimerId, showModalByScroll));
 });
 
-function openModal() {
-modal.classList.add('show');
-modal.classList.remove('hide');
-document.body.style.overflow = 'hidden';
-clearInterval(modalTimerId);
-window.removeEventListener('scroll', showModalByScroll); // убираем обработчик со скрола
-}
-
-function closeModal() {
-modal.classList.add('hide');
-modal.classList.remove('show');
-document.body.style.overflow = '';
-};
-
-
-
 modal.addEventListener('click', (e)=> {
-if (e.target === modal || e.target.getAttribute('data-close') == '') {
-  closeModal();
-} 
+    if (e.target === modal || e.target.getAttribute('data-close') == '') {
+      closeModal(modalSelector);
+    } 
 });
 
 document.addEventListener('keydown', (e) => {
-if (e.code === 'Escape' && modal.classList.contains('show')) {
-  closeModal();
+    if (e.code === 'Escape' && modal.classList.contains('show')) {
+      closeModal(modalSelector);
 }
 });
 
@@ -68,16 +75,6 @@ if (e.code === 'Escape' && modal.classList.contains('show')) {
 
 // дорабатываем модельное окно
 
-const modalTimerId = setTimeout (openModal, 150000);
-
-function showModalByScroll () {
-if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
-  openModal();
-  window.removeEventListener('scroll', showModalByScroll);
-}
-}
-
-window.addEventListener('scroll', showModalByScroll);
 
 // конец доработки модульного окна
 
@@ -119,6 +116,19 @@ window.addEventListener('scroll', showModalByScroll);
 
 // Решение по курсу
 
+
+function showModalByScroll () {
+ 
+  if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+    openModal(modalSelector, modalTimerId, showModalByScroll);
+    }
+  }
+window.addEventListener('scroll', showModalByScroll);
 }
 
-module.exports = modal;
+
+
+export default modal;
+export {closeModal};
+export {openModal};
+
